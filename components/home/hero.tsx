@@ -12,35 +12,35 @@ interface PortfolioLogo {
 
 const portfolioLogos: PortfolioLogo[] = [
   {
-    src: "/landing-page/tax-maverick-logo.png",
+    src: "/landing-page/portfolios/tax-maverick-logo.png",
     alt: "Tax Maverick",
     width: 100,
     height: 100,
     className: "",
   },
   {
-    src: "/landing-page/liberte-logo.png",
+    src: "/landing-page/portfolios/liberte-logo.png",
     alt: "Liberte",
     width: 60,
     height: 60,
     className: "",
   },
   {
-    src: "/landing-page/taxmate-logo.png",
+    src: "/landing-page/portfolios/taxmate-logo.png",
     alt: "Taxmate",
     width: 100,
     height: 100,
     className: "invert brightness-0",
   },
   {
-    src: "/landing-page/tax-plan-experts-logo.png",
+    src: "/landing-page/portfolios/tax-plan-experts-logo.png",
     alt: "Tax Plan Experts",
     width: 70,
     height: 70,
     className: "",
   },
   {
-    src: "/landing-page/gani-table-logo.png",
+    src: "/landing-page/portfolios/gani-table-logo.png",
     alt: "Gani Table",
     width: 100,
     height: 100,
@@ -100,6 +100,7 @@ export default function Hero() {
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
+                priority
               />
             </div>
           ))}
