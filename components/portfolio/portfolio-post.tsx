@@ -2,13 +2,26 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Section } from "@/lib/types";
 import { Portfolio } from "@/lib/types";
+import Link from "next/link";
 
 export default function PortfolioPost({ post }: { post: Portfolio }) {
   const projectDetails = [
     { label: post.client, value: post.client_value },
     { label: post.services, value: post.services_value },
     { label: post.duration, value: post.duration_value },
-    { label: post.website, value: post.website_value },
+    {
+      label: post.website,
+      value: (
+        <Link
+          href={post.website_value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#85d54a]"
+        >
+          Preview
+        </Link>
+      ),
+    },
   ];
 
   return (
