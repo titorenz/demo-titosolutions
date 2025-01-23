@@ -29,7 +29,7 @@ export default async function Blogs(props: {
   const { data: recentPosts } = await supabase
     .from("posts")
     .select("id, title, image_url, created_at")
-    .eq("post_type", "")
+    .eq("post_type", "blogs")
     .order("created_at", { ascending: false })
     .limit(3);
 
