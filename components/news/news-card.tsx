@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { slugify } from "@/lib/utils";
+import { slugify, stripHtmlAndTruncate, truncateCategory } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -15,17 +15,6 @@ interface Post {
       }
     | { name: string }[];
   slug?: string;
-}
-
-function stripHtmlAndTruncate(html: string, maxLength: number): string {
-  const strippedText = html.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
-  return strippedText.length > maxLength
-    ? strippedText.slice(0, maxLength) + "..."
-    : strippedText;
-}
-
-function truncateCategoryName(name: string, maxLength: number): string {
-  return name.length > maxLength ? name.slice(0, maxLength) + "" : name;
 }
 
 export function NewsCard({ posts }: { posts: Post[] }) {
@@ -51,11 +40,9 @@ export function NewsCard({ posts }: { posts: Post[] }) {
               <p className="text-primary hover:text-[#85d54a]">
                 {Array.isArray(post.categories)
                   ? post.categories
-                      .map((category) =>
-                        truncateCategoryName(category.name, 23)
-                      )
+                      .map((category) => truncateCategory(category.name, 23))
                       .join(", ")
-                  : truncateCategoryName(post.categories.name, 23)}
+                  : truncateCategory(post.categories.name, 23)}
               </p>
               <span className="text-muted-foreground">•</span>
               <time className="text-muted-foreground hover:text-[#85d54a]">

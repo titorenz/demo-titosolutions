@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { slugify } from "@/lib/utils";
+import { slugify, stripHtmlAndTruncate } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -15,13 +15,6 @@ interface Post {
       }
     | { name: string }[]; // Can be an array or a single object
   slug?: string;
-}
-
-function stripHtmlAndTruncate(html: string, maxLength: number): string {
-  const strippedText = html.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
-  return strippedText.length > maxLength
-    ? strippedText.slice(0, maxLength) + "..."
-    : strippedText;
 }
 
 export default function PostGrid({ posts }: { posts: Post[] }) {

@@ -22,3 +22,18 @@ export function slugify(text: string) {
     .replace(/[^\w\-]+/g, "")
     .replace(/\-\-+/g, "-");
 }
+
+export function truncateTexts(name: string, maxLength: number) {
+  return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
+}
+
+export function truncateCategory(name: string, maxLength: number) {
+  return name.length > maxLength ? name.slice(0, maxLength) + "" : name;
+}
+
+export function stripHtmlAndTruncate(html: string, maxLength: number): string {
+  const strippedText = html.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
+  return strippedText.length > maxLength
+    ? strippedText.slice(0, maxLength) + "..."
+    : strippedText;
+}

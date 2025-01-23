@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
-import { slugify } from "@/lib/utils";
+import { formatDate, truncateTexts, slugify } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -9,10 +8,6 @@ interface Post {
   image_url: string;
   created_at: string;
   slug?: string;
-}
-
-function truncateText(text: string, maxLength: number): string {
-  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 export function RecentPosts({ posts }: { posts: Post[] }) {
@@ -42,7 +37,7 @@ export function RecentPosts({ posts }: { posts: Post[] }) {
                 {formatDate(post.created_at)}
               </p>
               <h3 className="text-md font-semibold leading-snug hover:text-[#85d54a]">
-                {truncateText(post.title, 50)}{" "}
+                {truncateTexts(post.title, 50)}{" "}
               </h3>
             </div>
           </Link>

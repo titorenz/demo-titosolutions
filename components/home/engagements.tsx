@@ -2,16 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { truncateTexts } from "@/lib/utils";
 
 interface Engagement {
   id: number;
   value: string;
   suffix: string;
   label: string;
-}
-
-function truncateLabel(label: string, maxLength: number): string {
-  return label.length > maxLength ? label.slice(0, maxLength) + "..." : label;
 }
 
 export default async function Engagements() {
@@ -63,7 +60,7 @@ export default async function Engagements() {
                       {engagement.label}
                     </p>
                     <p className="inline sm:hidden text-white text-sm text-center font-normal md:text-base">
-                      {truncateLabel(engagement.label, 18)}
+                      {truncateTexts(engagement.label, 18)}
                     </p>
                   </div>
                 ))}
