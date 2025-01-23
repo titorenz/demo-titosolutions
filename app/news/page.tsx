@@ -5,9 +5,9 @@ import { SearchBar } from "@/components/blogs/search-bar";
 import { RecentPosts } from "@/components/news/recent-posts";
 import Header from "@/components/home/header";
 import Footer from "@/components/home/footer";
-import { supabase } from "@/lib/supabase";
 import { NewsCategories } from "@/components/news/news-categories";
 import { NewsCard } from "@/components/news/news-card";
+import { fetchPosts, fetchRecentPosts } from "@/lib/posts";
 
 const POSTS_PER_PAGE = 6;
 
@@ -26,43 +26,17 @@ export default async function News(props: {
   const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
   const searchQuery = searchParams.search || "";
 
-  const { data: recentPosts } = await supabase
-    .from("posts")
-    .select("id, title, image_url, created_at")
-    .eq("post_type", "news")
-    .order("created_at", { ascending: false })
-    .limit(3);
+  const recentPosts = await fetchRecentPosts("news");
 
-  const postsQuery = supabase
-    .from("posts")
-    .select(
-      "id, title, content, image_url, created_at, post_type, categories(name)",
-      { count: "exact" }
-    )
-    .eq("post_type", "news")
-    .order("created_at", { ascending: false });
-
-  if (categoryId) {
-    postsQuery.eq("category_id", categoryId);
-  }
-
-  if (searchQuery) {
-    postsQuery.ilike("title", `%${searchQuery}%`);
-  }
-
-  const { data: allPosts, error: countError, count } = await postsQuery;
-
-  if (countError) {
-    console.error("Error fetching posts:", countError);
-    return <div>Error loading posts</div>;
-  }
+  const { data: allPosts, count } = await fetchPosts({
+    postType: "news",
+    categoryId,
+    searchQuery,
+    page: currentPage,
+    postsPerPage: POSTS_PER_PAGE,
+  });
 
   const totalPages = count ? Math.ceil(count / POSTS_PER_PAGE) : 0;
-
-  const paginatedPosts = allPosts?.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
 
   return (
     <>
@@ -92,9 +66,9 @@ export default async function News(props: {
             </div>
             <div className="flex flex-col gap-8 lg:flex-row">
               <div className="lg:flex-1">
-                {paginatedPosts && paginatedPosts.length > 0 ? (
+                {allPosts && allPosts.length > 0 ? (
                   <div className="grid gap-8 sm:grid-cols-2">
-                    <NewsCard posts={paginatedPosts} />
+                    <NewsCard posts={allPosts} />
                   </div>
                 ) : (
                   <div className="text-center text-gray-500">

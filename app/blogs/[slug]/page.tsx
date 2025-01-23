@@ -5,49 +5,29 @@ import { BlogCategories } from "@/components/blogs/blog-categories";
 import { RecentPosts } from "@/components/blogs/recent-posts";
 import { SearchBar } from "@/components/blogs/search-bar";
 import { notFound } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import Footer from "@/components/home/footer";
 import Header from "@/components/home/header";
+import { fetchPost, fetchRecentPosts } from "@/lib/posts";
 
 export default async function BlogPost(props: {
   params: Promise<{ slug: string; search?: string }>;
 }) {
   const params = await props.params;
+
+  if (!params.slug) {
+    notFound(); // Redirect to 404 if slug is missing
+  }
+
   const searchQuery = params.search || "";
 
-  const { data: recentPosts } = await supabase
-    .from("posts")
-    .select("id, title, image_url, created_at, slug")
-    .eq("post_type", "blogs")
-    .order("created_at", { ascending: false })
-    .limit(3);
+  const recentPosts = await fetchRecentPosts("blogs");
 
-  const { data: post, error } = await supabase
-    .from("posts")
-    .select("*, categories(name)")
-    .eq("slug", params.slug)
-    .single();
+  const { data: post, error } = await fetchPost({
+    slug: params.slug,
+  });
 
-  if (error) {
-    console.error("Error fetching post:", error);
-    notFound();
-  }
-
-  if (!post) {
-    notFound();
-  }
-
-  const postsQuery = supabase
-    .from("posts")
-    .select(
-      "id, title, content, image_url, created_at, slug, post_type, categories(name)",
-      { count: "exact" }
-    )
-    .eq("post_type", "blogs")
-    .order("created_at", { ascending: false });
-
-  if (searchQuery) {
-    postsQuery.ilike("title", `%${searchQuery}%`);
+  if (error || !post) {
+    notFound(); // Redirect to 404 if post not found
   }
 
   const breadcrumbPaths = [
