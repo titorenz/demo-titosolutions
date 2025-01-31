@@ -6,6 +6,28 @@ import PortfolioPost from "@/components/portfolio/portfolio-post";
 import Header from "@/components/home/header";
 import Footer from "@/components/home/footer";
 import { supabase } from "@/lib/supabase";
+import { Metadata } from "next";
+import { sharedMetadata } from "@/app/shared-metadata";
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const { data: post } = await supabase
+    .from("portfolios")
+    .select("*")
+    .eq("slug", params.slug)
+    .single();
+
+  return {
+    ...sharedMetadata,
+    title:
+      post?.title || "Our Stories | Tito Solutions - IT Solutions Provider",
+    description:
+      post?.excerpt ||
+      "Explore our portfolio of successful IT projects and solutions. Read detailed case studies about how we help businesses transform through technology.",
+  };
+}
 
 export default async function OurStories(props: {
   params: Promise<{ slug: string }>;

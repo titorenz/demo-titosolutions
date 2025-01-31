@@ -8,6 +8,15 @@ import Footer from "@/components/home/footer";
 import { NewsCategories } from "@/components/news/news-categories";
 import { NewsCard } from "@/components/news/news-card";
 import { fetchPosts, fetchRecentPosts } from "@/lib/posts";
+import { Metadata } from "next";
+import { sharedMetadata } from "../shared-metadata";
+
+export const metadata: Metadata = {
+  ...sharedMetadata,
+  title: "Latest News and Updates | TRW Solutions",
+  description:
+    "Stay informed with the latest news, updates, and insights from TRW Solutions. Discover industry trends, company announcements, and expert perspectives on waste management solutions.",
+};
 
 const POSTS_PER_PAGE = 6;
 

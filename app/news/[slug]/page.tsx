@@ -8,6 +8,23 @@ import Footer from "@/components/home/footer";
 import Header from "@/components/home/header";
 import { NewsCategories } from "@/components/news/news-categories";
 import { fetchPost, fetchRecentPosts } from "@/lib/posts";
+import { Metadata } from "next";
+import { sharedMetadata } from "@/app/shared-metadata";
+
+export const generateMetadata = async (props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> => {
+  const params = await props.params;
+  const { data: post } = await fetchPost({ slug: params.slug });
+
+  return {
+    ...sharedMetadata,
+    title: post?.title || "Latest News and Updates | Tito Solutions",
+    description:
+      post?.excerpt ||
+      "Stay updated with the latest news, announcements, and insights from Tito Solutions. Read our latest articles and company updates.",
+  };
+};
 
 export default async function NewsPost(props: {
   params: Promise<{ slug: string; search?: string }>;

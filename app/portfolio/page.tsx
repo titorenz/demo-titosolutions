@@ -3,6 +3,15 @@ import Image from "next/image";
 import SuccessStories from "@/components/portfolio/success-stories";
 import Footer from "@/components/home/footer";
 import Header from "@/components/home/header";
+import { Metadata } from "next";
+import { sharedMetadata } from "../shared-metadata";
+
+export const metadata: Metadata = {
+  ...sharedMetadata,
+  title: "Our Portfolio | Success Stories and Case Studies | TITO Solutions",
+  description:
+    "Explore our portfolio of successful digital transformations and IT solutions. See how we've helped businesses achieve their goals through innovative technology solutions.",
+};
 
 export default function Portfolio() {
   const breadcrumbPaths = [

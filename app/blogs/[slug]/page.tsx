@@ -8,6 +8,23 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/home/footer";
 import Header from "@/components/home/header";
 import { fetchPost, fetchRecentPosts } from "@/lib/posts";
+import { Metadata } from "next";
+import { sharedMetadata } from "@/app/shared-metadata";
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const { data: post } = await fetchPost({ slug: params.slug });
+
+  return {
+    ...sharedMetadata,
+    title: post?.title || "Blog Post | TiTo Solutions",
+    description:
+      post?.excerpt ||
+      "Read our latest insights and articles about technology, business solutions, and industry trends.",
+  };
+}
 
 export default async function BlogPost(props: {
   params: Promise<{ slug: string; search?: string }>;

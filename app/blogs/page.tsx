@@ -8,6 +8,15 @@ import { RecentPosts } from "@/components/blogs/recent-posts";
 import Header from "@/components/home/header";
 import Footer from "@/components/home/footer";
 import { fetchRecentPosts, fetchPosts } from "@/lib/posts";
+import { Metadata } from "next";
+import { sharedMetadata } from "../shared-metadata";
+
+export const metadata: Metadata = {
+  ...sharedMetadata,
+  title: "Tito Solutions Blogs - Expert Insights & Technology Updates",
+  description:
+    "Explore our collection of expert blogs covering technology solutions, industry insights, and innovative best practices. Stay informed with Tito Solutions' latest articles and updates.",
+};
 
 const POSTS_PER_PAGE = 6;
 

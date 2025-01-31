@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Poppins } from "next/font/google";
 import "./globals.css";
+import { sharedMetadata } from "./shared-metadata";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -15,8 +16,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Tito Solutions",
-  description: "We help people and businesses materialize their tech ideas.",
+  ...sharedMetadata,
 };
 
 export default function RootLayout({
@@ -26,10 +26,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="canonical" href="https://www.titosolutions.ph" />
+      </head>
       <body
         className={`${montserrat.variable} ${poppins.variable} antialiased`}
       >
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Company",
+              name: "Tito Solutions",
+              url: "https://www.titosolutions.ph",
+              sameAs: [
+                "https://www.linkedin.com/company/tito-solutions",
+                "https://www.facebook.com/titosolutions",
+              ],
+              description:
+                "A technology solutions company specializing in web and mobile development, helping businesses transform their ideas into innovative digital products using modern technologies and best practices.",
+            }),
+          }}
+        />
       </body>
     </html>
   );
